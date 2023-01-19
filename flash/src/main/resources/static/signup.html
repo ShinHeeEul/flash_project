@@ -5,15 +5,20 @@
 </head>
 <body>
 <h2>회원 가입</h2>
-<form>
+<form action = "/signup" method ="post">
     nickname
-    <br><input type="text" id="nickName" />
+    <br><input type="text" id="nickname" name="nickname" />
     <br>
     id
-    <br><input/>
+    <br><input type="text" id="id" name="id"/>
     <br>
     password
-    <br><input/>
+    <br><input type="text" id="password" name="password"/>
+
+    <div>
+            <button type="submit">저장</button>
+            <button onclick="location.href='/'" type="button">취소</button>
+    </div>
 </form>
 </body>
 </html>

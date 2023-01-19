@@ -1,12 +1,15 @@
 package flash.flash.repository;
 
 import flash.flash.JPA.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class User_Repository {
 
     private Map<Long, User> store = new HashMap<>();
@@ -20,6 +23,10 @@ public class User_Repository {
 
     public User findById(Long id) {
         return store.get(id);
+    }
+
+    public void clearStore() {
+        store.clear();
     }
 
 
