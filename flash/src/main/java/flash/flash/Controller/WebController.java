@@ -16,6 +16,10 @@ public class WebController {
         return "주소 삭제 완료";
     }
 
+    public String loginTest() {
+        return " g";
+    }
+
 
 
 }
