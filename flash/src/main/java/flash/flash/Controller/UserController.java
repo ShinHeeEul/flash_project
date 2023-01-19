@@ -4,13 +4,10 @@ package flash.flash.Controller;
 import flash.flash.JPA.User;
 import flash.flash.repository.User_Repository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,6 +30,10 @@ public class UserController {
         Boolean login_check = false;
         for(int i = 0; i < list.size(); i++) {
             us = list.get(i);
+
+            log.info("id = " + us.getUser_id());
+
+
             if((us.getUser_id() == id) && (us.getUser_pw() == password)) {
                 login_check = true;
                 break;
@@ -85,15 +86,6 @@ public class UserController {
         return "0";
     }
 
-    @GetMapping("/test")
-    public String test(Model model) {
-        User user = new User();
-        user.setUser_id("1");
-        user.setName("hello");
-        user.setUser_pw("dfs");
-        model.addAttribute("user", user);
-        return "/test";
-    }
 
 
 
