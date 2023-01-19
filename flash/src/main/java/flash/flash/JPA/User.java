@@ -23,7 +23,7 @@ public class User {
     private String user_id;
     private String user_pw;
     private String name;
-    private String status;
+    private int status;
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -64,11 +64,11 @@ public class User {
         this.name = name;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
