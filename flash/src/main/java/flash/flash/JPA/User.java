@@ -11,9 +11,9 @@ import java.util.Map;
 
 //@Entity
 
-public class user {
+public class User {
 
-    public user() {
+    public User() {
 
     }
     @Id

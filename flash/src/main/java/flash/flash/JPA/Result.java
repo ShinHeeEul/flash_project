@@ -1,4 +1,4 @@
 package flash.flash.JPA;
 
-public class result {
+public class Result {
 }
