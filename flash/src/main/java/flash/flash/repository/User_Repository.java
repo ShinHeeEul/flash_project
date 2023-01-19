@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -27,6 +29,10 @@ public class User_Repository {
 
     public void clearStore() {
         store.clear();
+    }
+
+    public List<User> findAll() {
+        return new ArrayList<>(store.values());
     }
 
 
