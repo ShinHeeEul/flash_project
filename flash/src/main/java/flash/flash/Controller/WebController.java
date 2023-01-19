@@ -8,24 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class WebController {
-
-    @GetMapping("/logintest")
-    public String login2() {
-        return "login";
-    }
-
-
     @GetMapping("/login")
     public String login() {
-        return "hello world";
-    }
-
-    @GetMapping("/test")
-    public String dfd() {
-        return "hello";
+        return "주소 삭제 완료";
     }
 
 
