@@ -10,9 +10,15 @@
     <h2>유저</h2>
 </div>
 <form action="/" method="post">
-id
-pw
-nickname
+    id
+    <span th:text="${user.user_id}"></span>
+    <br>
+    pw
+    <span th:text="${user.user_pw}"></span>
+    <br>
+    nickname
+    <span th:text="${user.name}"></span>
+    <br>
     <div>
         <button onclick="location.href='/'" type="button">돌아가기</button>
     </div>
