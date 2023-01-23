@@ -77,11 +77,11 @@ public class UserController {
         //회원가입 요청이 오면
         //repository에 id 중복이 있나 확인을 하고
         //있는 경우 에러 return
-        if(repository.findByUserId(id).equals(Optional.empty())) {
+        if(!repository.findByUserId(id).equals(Optional.empty())) {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
-            //controller 경우 redirect
-            return "redirect://signup";
+            //controller 경우
+            return "/";
         }
         //없는 경우 repository에 저장 후 return
         //////////////////////////////////////////
