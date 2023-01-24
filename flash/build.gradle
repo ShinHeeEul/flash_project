@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	compileOnly 'com.google.cloud:google-cloud-speech:0.32.0-alpha'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

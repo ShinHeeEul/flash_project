@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h2>메인 화면</h2>
+<h4 th:text="|로그인 : ${user.name} 님|">로그인 사용자 이름</h4>
+
+<button type="button" onclick="location.href='/user'">회원정보</button>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">
+        로그아웃
+    </button>
+</form>
+</body>
+</html>

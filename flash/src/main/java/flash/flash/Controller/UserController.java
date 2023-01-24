@@ -4,12 +4,14 @@ package flash.flash.Controller;
 import flash.flash.JPA.User;
 import flash.flash.repository.User_Repository;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 //////////////////////////////////////////////////////////
@@ -25,13 +27,25 @@ import java.util.Optional;
 
 //////////////////////////////////////////////////////////
 
+
 @Controller
 @Slf4j
 public class UserController {
 
-
+    ///////////////////////////////////
     //데이터베이스
+    //local
     User_Repository repository = new User_Repository();
+    ///////////////////////////////////
+
+
+
+    ///////////////////////////////////
+    //상수 선언
+    final String ID = "Id";
+    ///////////////////////////////////
+
+
 
     //login 화면<GET>
     @GetMapping("/login")
@@ -39,12 +53,12 @@ public class UserController {
         return "/login.html";
     }
 
-
     //login API<POST>
     @PostMapping("/login")
-    @ResponseBody
+    //@ResponseBody
     public String Login(@RequestParam String id,
-                        @RequestParam String password, Model model) {
+                        @RequestParam String password, Model model,
+                        HttpServletResponse response) {
         //데이터베이스로부터 해당 id에 해당하는 user가 있나 확인
         Optional<User> us = repository.findByUserId(id);
 
@@ -59,7 +73,21 @@ public class UserController {
         }
 
         //login 성공
-        return "1";
+        Cookie idCookie = new Cookie(ID,
+                String.valueOf(us.get().getId()));
+        response.addCookie(idCookie);
+
+        //return "1";
+        return "redirect:/";
+    }
+
+    //LogOut 화면<POST>
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie(ID,null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
     //회원가입 화면<GET>
@@ -81,7 +109,7 @@ public class UserController {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
             //controller 경우
-            return "/";
+            return "redirect:/";
         }
         //없는 경우 repository에 저장 후 return
         //////////////////////////////////////////
@@ -104,6 +132,29 @@ public class UserController {
         //controller 경우 html 파일 return
             return "/signup";
 
+    }
+
+    //회원페이지
+
+    @GetMapping("/")
+    public String homeLogin(
+            @CookieValue(name = ID, required = false) Long id,
+            Model model)
+    {
+        if(id == null) return "home";
+        User us = repository.findById(id);
+        if(us == null) return "home";
+        model.addAttribute("user", us);
+
+        return "loginHome";
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    public String User_Name(
+            @CookieValue(name = ID, required = false) Long id) {
+        User us = repository.findById(id);
+        return us.getName();
     }
 
 }
