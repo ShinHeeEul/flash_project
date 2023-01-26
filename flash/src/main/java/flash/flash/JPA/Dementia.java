@@ -27,6 +27,7 @@ public class Dementia {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    // Map: 데이터 저장 구조 중 한 종류. map은 key 값과 value값의 형태로 저장. Map<String,Object>에서 String은 key값의 자료형, Object는 value값의 자료형.
     private Map<String,Object> result_set= new HashMap<>();
 
     public String getId() {
