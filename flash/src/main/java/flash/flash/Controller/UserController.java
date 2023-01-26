@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
@@ -44,7 +45,7 @@ public class UserController {
 
     ///////////////////////////////////
     //상수 선언
-    final String user_id = "user_id";
+    final String ID = "ID";
     ///////////////////////////////////
 
 
@@ -63,7 +64,7 @@ public class UserController {
                         HttpServletResponse response) {
 
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findByUseruser_id(user_id);
+        Optional<User> us = repository.findById(user_id);
 
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
@@ -76,7 +77,7 @@ public class UserController {
         }
 
         //login 성공
-        Cookie user_idCookie = new Cookie(user_id,
+        Cookie user_idCookie = new Cookie(ID,
                 String.valueOf(us.get().getUser_id()));
         response.addCookie(user_idCookie);
 
@@ -87,7 +88,7 @@ public class UserController {
     //LogOut 화면<POST>
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie(user_id,null);
+        Cookie cookie = new Cookie(ID,null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "redirect:/";
@@ -108,7 +109,7 @@ public class UserController {
         //회원가입 요청이 오면
         //repository에 user_id 중복이 있나 확인을 하고
         //있는 경우 에러 return
-        if(!repository.findByUseruser_id(user_id).equals(Optional.empty())) {
+        if(!repository.findById(user_id).equals(Optional.empty())) {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
             //controller 경우
@@ -129,20 +130,19 @@ public class UserController {
         //////////////////////////////////////////
 
         //model에 user 추가
-            model.addAttribute("user", user);
-            //"SIGN UP SUCCESS"
+        model.addAttribute("user", user);
+        //"SIGN UP SUCCESS"
         //restController 경우 정상 메세지로 1 반환
         //return "1";
         //controller 경우 html 파일 return
-            return "/signup";
-
+        return "/signup";
     }
 
     //회원페이지
 
     @GetMapping("/")
     public String homeLogin(
-            @CookieValue(name = user_id, required = false) Long user_id,
+            @CookieValue(name = ID, required = false) Long user_id,
             Model model)
     {
 
@@ -156,7 +156,7 @@ public class UserController {
 
     @GetMapping("/user")
     @ResponseBody
-    public String User_info(@CookieValue(name = user_id, required = false) Long user_id)
+    public String User_info(@CookieValue(name = ID, required = false) Long user_id)
     {
 
         User us = repository.findByuser_id(user_id);

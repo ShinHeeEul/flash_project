@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@Entity
+//@Entity
 public class Result {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int user_id;
+    private int result_id;
 
     private String test_result;
 
@@ -23,12 +23,12 @@ public class Result {
 
     private Map<String, Object> result_set = new HashMap<>();
 
-    public int getuser_id() {
-        return user_id;
+    public int getResult_id() {
+        return result_id;
     }
 
-    public void setuser_id(int user_id) {
-        this.user_id = user_id;
+    public void setResult_id(int result_id) {
+        this.result_id = result_id;
     }
 
     public String getTest_result() {

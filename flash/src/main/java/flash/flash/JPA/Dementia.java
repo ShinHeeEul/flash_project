@@ -17,10 +17,10 @@ public class Dementia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long dementia_id;
 
     private long user_dialog;
-    private String dementia_id;
+    private String user_id;
     private int status;
 
     @CreationTimestamp
@@ -29,12 +29,17 @@ public class Dementia {
     // Map: 데이터 저장 구조 중 한 종류. map은 key 값과 value값의 형태로 저장. Map<String,Object>에서 String은 key값의 자료형, Object는 value값의 자료형.
     private Map<String,Object> result_set= new HashMap<>();
 
-    public Long getId() {
-        return id;
+
+    public void setDementia_id(Long dementia_id) {
+        this.dementia_id = dementia_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public long getUser_dialog() {
@@ -43,14 +48,6 @@ public class Dementia {
 
     public void setUser_dialog(long user_dialog) {
         this.user_dialog = user_dialog;
-    }
-
-    public String getDementia_id() {
-        return dementia_id;
-    }
-
-    public void setDementia_id(String dementia_id) {
-        this.dementia_id = dementia_id;
     }
 
     public int getStatus() {

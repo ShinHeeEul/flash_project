@@ -35,7 +35,7 @@ public class User_Repository {
 
 
     //로 User 검색
-    public Optional<User> findByUseruser_id(String user_id) {
+    public Optional<User> findById(String user_id) {
         Optional<User> tmp = store.values().stream().filter(u -> u.getId().equals(user_id)).findFirst();
         return tmp;
     }
