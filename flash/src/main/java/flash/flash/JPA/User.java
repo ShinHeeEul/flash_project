@@ -18,10 +18,11 @@ public class User {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long user_id;
 
-    private String user_id;
-    private String user_pw;
+    @OneToOne
+    private String id;
+    private String pw;
     private String name;
     private int status;
 
@@ -32,28 +33,28 @@ public class User {
 
     private Map<String,Object> result_set= new HashMap<>();
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 
-    public String getUser_pw() {
-        return user_pw;
+    public String getId() {
+        return id;
     }
 
-    public void setUser_pw(String user_pw) {
-        this.user_pw = user_pw;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPw() {
+        return pw;
+    }
+
+    public void setPw(String pw) {
+        this.pw = pw;
     }
 
     public String getName() {

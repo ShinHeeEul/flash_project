@@ -23,20 +23,20 @@ public class User_Repository {
 
     //user를 map에 저장
     public User save(User us) {
-        us.setId(sequence++);
-        store.put(us.getId(), us);
+        us.setUser_id(sequence++);
+        store.put(us.getUser_id(), us);
         return us;
     }
 
-    //id로 User 검색
-    public User findById(Long id) {
-        return store.get(id);
+    //user_id로 User 검색
+    public User findByuser_id(Long user_id) {
+        return store.get(user_id);
     }
 
 
-    //User_id로 User 검색
-    public Optional<User> findByUserId(String user_id) {
-        Optional<User> tmp = store.values().stream().filter(u -> u.getUser_id().equals(user_id)).findFirst();
+    //로 User 검색
+    public Optional<User> findByUseruser_id(String user_id) {
+        Optional<User> tmp = store.values().stream().filter(u -> u.getId().equals(user_id)).findFirst();
         return tmp;
     }
 

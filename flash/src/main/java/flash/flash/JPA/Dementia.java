@@ -3,13 +3,12 @@ package flash.flash.JPA;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+//@Entity
 public class Dementia {
 
     public Dementia() {
@@ -18,10 +17,10 @@ public class Dementia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private long user_dialog;
-    private String user_id;
+    private String dementia_id;
     private int status;
 
     @CreationTimestamp
@@ -30,11 +29,11 @@ public class Dementia {
     // Map: 데이터 저장 구조 중 한 종류. map은 key 값과 value값의 형태로 저장. Map<String,Object>에서 String은 key값의 자료형, Object는 value값의 자료형.
     private Map<String,Object> result_set= new HashMap<>();
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,12 +45,12 @@ public class Dementia {
         this.user_dialog = user_dialog;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getDementia_id() {
+        return dementia_id;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setDementia_id(String dementia_id) {
+        this.dementia_id = dementia_id;
     }
 
     public int getStatus() {

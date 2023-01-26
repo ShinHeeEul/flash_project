@@ -1,9 +1,11 @@
 package flash.flash.Controller;
 
 
+import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
 import flash.flash.repository.User_Repository;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +44,7 @@ public class UserController {
 
     ///////////////////////////////////
     //상수 선언
-    final String ID = "Id";
+    final String user_id = "user_id";
     ///////////////////////////////////
 
 
@@ -56,26 +58,27 @@ public class UserController {
     //login API<POST>
     @PostMapping("/login")
     //@ResponseBody
-    public String Login(@RequestParam String id,
+    public String Login(@RequestParam String user_id,
                         @RequestParam String password, Model model,
                         HttpServletResponse response) {
-        //데이터베이스로부터 해당 id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findByUserId(id);
 
-        //login 실패 : id 없음
+        //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
+        Optional<User> us = repository.findByUseruser_id(user_id);
+
+        //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
             return "0";
         }
 
-        //login 실패 : id는 있으나 비밀번호 틀림
-        if(!us.get().getUser_pw().equals(password)) {
+        //login 실패 : user_id는 있으나 비밀번호 틀림
+        if(!us.get().getPw().equals(password)) {
             return "0";
         }
 
         //login 성공
-        Cookie idCookie = new Cookie(ID,
-                String.valueOf(us.get().getId()));
-        response.addCookie(idCookie);
+        Cookie user_idCookie = new Cookie(user_id,
+                String.valueOf(us.get().getUser_id()));
+        response.addCookie(user_idCookie);
 
         //return "1";
         return "redirect:/";
@@ -84,7 +87,7 @@ public class UserController {
     //LogOut 화면<POST>
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie(ID,null);
+        Cookie cookie = new Cookie(user_id,null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "redirect:/";
@@ -99,13 +102,13 @@ public class UserController {
     //회원가입 API<POST>
     @PostMapping("/signup")
     public String Sign(@RequestParam String nickname,
-                       @RequestParam String id,
+                       @RequestParam String user_id,
                        @RequestParam String password, Model model) {
 
         //회원가입 요청이 오면
-        //repository에 id 중복이 있나 확인을 하고
+        //repository에 user_id 중복이 있나 확인을 하고
         //있는 경우 에러 return
-        if(!repository.findByUserId(id).equals(Optional.empty())) {
+        if(!repository.findByUseruser_id(user_id).equals(Optional.empty())) {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
             //controller 경우
@@ -115,8 +118,9 @@ public class UserController {
         //////////////////////////////////////////
         //user 객체 생성
         User user = new User();
-        user.setUser_id(id);
-        user.setUser_pw(password);
+        user.setStatus(1);
+        user.setId(user_id);
+        user.setPw(password);
         user.setName(nickname);
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
@@ -138,11 +142,12 @@ public class UserController {
 
     @GetMapping("/")
     public String homeLogin(
-            @CookieValue(name = ID, required = false) Long id,
+            @CookieValue(name = user_id, required = false) Long user_id,
             Model model)
     {
-        if(id == null) return "home";
-        User us = repository.findById(id);
+
+        if(user_id == null) return "home";
+        User us = repository.findByuser_id(user_id);
         if(us == null) return "home";
         model.addAttribute("user", us);
 
@@ -151,10 +156,35 @@ public class UserController {
 
     @GetMapping("/user")
     @ResponseBody
-    public String User_Name(
-            @CookieValue(name = ID, required = false) Long id) {
-        User us = repository.findById(id);
-        return us.getName();
+    public String User_info(@CookieValue(name = user_id, required = false) Long user_id)
+    {
+
+        User us = repository.findByuser_id(user_id);
+
+        Dementia dem = new Dementia();
+
+
+        JSONArray jsonArray = null;
+
+        try {
+            //JSONArray 객체 생성
+            jsonArray = new JSONArray();
+
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("user_id", us.getId());
+            jsonObject.put("name", us.getName());
+            jsonObject.put("result",us.getResult_set());
+
+            jsonArray.put(jsonObject);
+
+        }
+
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return jsonArray.toString();
     }
 
 }

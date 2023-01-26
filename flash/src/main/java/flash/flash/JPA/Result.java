@@ -1,12 +1,13 @@
 package flash.flash.JPA;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 @Entity
 public class Result {
@@ -14,8 +15,7 @@ public class Result {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private int id;
+    private int user_id;
 
     private String test_result;
 
@@ -23,9 +23,36 @@ public class Result {
 
     private Map<String, Object> result_set = new HashMap<>();
 
+    public int getuser_id() {
+        return user_id;
+    }
 
+    public void setuser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
+    public String getTest_result() {
+        return test_result;
+    }
 
+    public void setTest_result(String test_result) {
+        this.test_result = test_result;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Map<String, Object> getResult_set() {
+        return result_set;
+    }
+
+    public void setResult_set(Map<String, Object> result_set) {
+        this.result_set = result_set;
+    }
 }
-
 
