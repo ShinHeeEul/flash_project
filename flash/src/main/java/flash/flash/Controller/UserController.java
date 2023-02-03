@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Id;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
@@ -62,7 +61,6 @@ public class UserController {
     public String Login(@RequestParam String user_id,
                         @RequestParam String password, Model model,
                         HttpServletResponse response) {
-
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
         Optional<User> us = repository.findById(user_id);
 
@@ -80,6 +78,7 @@ public class UserController {
         Cookie user_idCookie = new Cookie(ID,
                 String.valueOf(us.get().getUser_id()));
         response.addCookie(user_idCookie);
+
 
         //return "1";
         return "redirect:/";

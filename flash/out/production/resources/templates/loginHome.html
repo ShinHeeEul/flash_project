@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="utf-8">
 </head>
 <body>
 <h2>메인 화면</h2>
-<h4 th:text="|로그인 : ${user.name} 님|">로그인 사용자 이름</h4>
-
+<h4 th:incline="text">현재 사용자 : <span th:remove="tag" sec:authentication="name">로그인 사용자 이름</span>!</span></h4>
 <button type="button" onclick="location.href='/user'">회원정보</button>
+<button type="button" onclick="location.href='/upload">파일 업로드</button>
 <form th:action="@{/logout}" method="post">
     <button type="submit">
         로그아웃
