@@ -1,5 +1,6 @@
 package flash.flash.Controller;
 
+import flash.flash.STT.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,10 @@ public class DementiaController {
             //log.info(request.getServletContext().getRealPath("/upload"));
             String fileDir = request.getServletContext().getRealPath("/upload");
             String fullPath = fileDir + file.getOriginalFilename();
+            log.info("file",file.getContentType());
+            if(file.getContentType() == ".m4a") {
+                SpeechToText stt = new SpeechToText(fullPath);
+            }
             file.transferTo(new File(fullPath));
         }
 

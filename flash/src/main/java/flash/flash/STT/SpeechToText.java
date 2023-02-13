@@ -15,6 +15,7 @@ public class SpeechToText {
         recognitionSpeech(filePath);
     }
 
+    //1분 미만 음성 파일은 바로 분석
     public static void recognitionSpeech(String filePath) {
 
         try {
@@ -42,7 +43,7 @@ public class SpeechToText {
 
     }
 
-
+// 1분 이상 음성 파일은 google storage에 올려서 분석
     public static RecognitionAudio getRecognitionAudio(String filePath) throws IOException {
         RecognitionAudio recognitionAudio;
 
