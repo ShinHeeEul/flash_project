@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Entity
+//@Entity_s
 
 public class User {
 //추가.
