@@ -9,7 +9,7 @@ import java.util.Map;
 //@Entity
 public class Result {
 
-//추가.
+//추가
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int result_id;
