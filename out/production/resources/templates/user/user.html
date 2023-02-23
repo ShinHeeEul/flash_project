@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="../css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>유저</h2>
+</div>
+user_id
+<input th:value="${user.user_id}"/>
+pw
+<input th:value="${user.password}"/>
+nickname
+<input th:value="${user.nickname}"/>
+</body>
+</html>
