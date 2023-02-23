@@ -1,6 +1,7 @@
 package flash.flash.JPA;
 
 
+import lombok.Builder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 //@Entity
 
 public class User {
-
+    //추가
     public User() {
 
     }
@@ -97,3 +98,4 @@ public class User {
         this.result_set = result_set;
     }
 }
+

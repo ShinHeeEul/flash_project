@@ -7,20 +7,27 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-//.
+
 //@Entity
 public class Dementia {
 
     public Dementia() {
 
     }
-
+    //추가
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long dementia_id;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "result_id")
+    private Result test_result;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private User id;
     private long user_dialog;
-    private String user_id;
+
     private int status;
 
     @CreationTimestamp
@@ -34,13 +41,7 @@ public class Dementia {
         this.dementia_id = dementia_id;
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
 
     public long getUser_dialog() {
         return user_dialog;
