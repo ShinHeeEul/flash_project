@@ -35,7 +35,7 @@ public class DementiaController {
             String fileDir = request.getServletContext().getRealPath("/upload");
             String fullPath = fileDir + file.getOriginalFilename();
             log.info("file",file.getContentType());
-            if(file.getContentType() == ".m4a") {
+            if(file.getContentType() == ".mp3") {
                 SpeechToText stt = new SpeechToText(fullPath);
             }
             file.transferTo(new File(fullPath));
