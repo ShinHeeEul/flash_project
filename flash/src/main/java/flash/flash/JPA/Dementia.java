@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
+//.
 //@Entity
 public class Dementia {
 
