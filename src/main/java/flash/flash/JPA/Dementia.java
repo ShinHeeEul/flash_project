@@ -14,7 +14,7 @@ public class Dementia {
     public Dementia() {
 
     }
-
+//추가
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long dementia_id;

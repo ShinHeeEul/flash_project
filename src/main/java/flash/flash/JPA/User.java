@@ -13,7 +13,7 @@ import java.util.Map;
 //@Entity
 
 public class User {
-//얍
+//추가
     public User() {
 
     }
