@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+    <h2>유저</h2>
+</div>
+<form action="/" method="post">
+    id
+    <span th:text="${user.id}"></span>
+    <br>
+    pw
+    <span th:text="${user.pw}"></span>
+    <br>
+    nickname
+    <span th:text="${user.name}"></span>
+    <br>
+    <div>
+        <button onclick="location.href='/'" type="button">돌아가기</button>
+    </div>
+</form>
+</body>
+</html>
