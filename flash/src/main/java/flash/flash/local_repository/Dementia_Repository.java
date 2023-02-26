@@ -1,4 +1,4 @@
-package flash.flash.repository;
+package flash.flash.local_repository;
 
 
 import flash.flash.JPA.Dementia;
