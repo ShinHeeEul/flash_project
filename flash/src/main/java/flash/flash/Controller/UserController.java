@@ -3,10 +3,11 @@ package flash.flash.Controller;
 
 import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
-import flash.flash.repository.User_Repository;
+import flash.flash.JPA.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,6 @@ import java.util.Optional;
 //기능 : 회원가입, 로그인, 회원 페이지 API
 
 
-//////
-//front-end와 얘기해서 api 재정의 필요!!
-//////
 
 //////////////////////////////////////////////////////////
 
@@ -37,7 +35,8 @@ public class UserController {
     ///////////////////////////////////
     //데이터베이스
     //local
-    User_Repository repository = new User_Repository();
+    @Autowired
+    UserRepository repository;
     ///////////////////////////////////
 
 
@@ -62,7 +61,7 @@ public class UserController {
                         @RequestParam String password, Model model,
                         HttpServletResponse response) {
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findById(user_id);
+        Optional<User> us = repository.findByuid(user_id);
 
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
@@ -70,7 +69,7 @@ public class UserController {
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
-        if(!us.get().getPw().equals(password)) {
+        if(!us.get().getUpw().equals(password)) {
             return "0";
         }
 
@@ -108,7 +107,9 @@ public class UserController {
         //회원가입 요청이 오면
         //repository에 user_id 중복이 있나 확인을 하고
         //있는 경우 에러 return
-        if(!repository.findById(user_id).equals(Optional.empty())) {
+
+
+        if(!repository.findByuid(user_id).equals(Optional.empty())) {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
             //controller 경우
@@ -117,13 +118,15 @@ public class UserController {
         //없는 경우 repository에 저장 후 return
         //////////////////////////////////////////
         //user 객체 생성
-        User user = new User();
-        user.setStatus(1);
-        user.setId(user_id);
-        user.setPw(password);
-        user.setName(nickname);
-        user.setCreated_at(LocalDateTime.now());
-        user.setUpdated_at(LocalDateTime.now());
+        User user = User.builder()
+                .status(1)
+                .id(user_id)
+                .pw(password)
+                .name(nickname)
+                .created_at(LocalDateTime.now())
+                .updated_at(LocalDateTime.now())
+                .build();
+
         //repository에 저장
         repository.save(user);
         //////////////////////////////////////////
@@ -146,7 +149,7 @@ public class UserController {
     {
 
         if(user_id == null) return "home";
-        User us = repository.findByuser_id(user_id);
+        Optional<User> us = repository.findById(user_id);
         if(us == null) return "home";
         model.addAttribute("user", us);
 
@@ -158,7 +161,7 @@ public class UserController {
     public String User_info(@CookieValue(name = ID, required = false) Long user_id)
     {
 
-        User us = repository.findByuser_id(user_id);
+        Optional<User> us = repository.findById(user_id);
 
         Dementia dem = new Dementia();
 
@@ -171,9 +174,10 @@ public class UserController {
 
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("user_id", us.getId());
-            jsonObject.put("name", us.getName());
-            jsonObject.put("result",us.getResult_set());
+            jsonObject.put("user_id", us.get().getUid());
+            jsonObject.put("name", us.get().getUpw());
+            //결과 데이터 query로 추출해서 반환해줘야함
+            //jsonObject.put("result",us.get().getResult_set());
 
             jsonArray.put(jsonObject);
 

@@ -1,4 +1,4 @@
-package flash.flash.repository;
+package flash.flash.local_repository;
 
 import flash.flash.JPA.User;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ public class User_Repository {
 
     //user를 map에 저장
     public User save(User us) {
-        us.setUser_id(sequence++);
         store.put(us.getUser_id(), us);
         return us;
     }
@@ -36,7 +35,7 @@ public class User_Repository {
 
     //로 User 검색
     public Optional<User> findById(String user_id) {
-        Optional<User> tmp = store.values().stream().filter(u -> u.getId().equals(user_id)).findFirst();
+        Optional<User> tmp = store.values().stream().filter(u -> u.getUid().equals(user_id)).findFirst();
         return tmp;
     }
 
