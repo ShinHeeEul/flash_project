@@ -7,24 +7,22 @@ import java.util.Map;
 
 
 @Entity
-@Table
+@Table(name = "RESULT_TABLE")
 public class Result {
 
     //추가
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int result_id;
+    private Long result_id;
 
 
     private String test_result;
 
     private int status;
 
-
-    public int getResult_id() {
+    public Long getResult_id() {
         return result_id;
     }
-
 
     public String getTest_result() {
         return test_result;

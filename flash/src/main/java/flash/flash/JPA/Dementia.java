@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@Table
+@Table(name = "DEMENTIA_TABLE")
 public class Dementia {
 
     public Dementia() {

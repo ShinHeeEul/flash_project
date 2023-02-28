@@ -23,8 +23,6 @@ import java.util.Optional;
 //설명 : User 내용을 처리하는 Controller
 //기능 : 회원가입, 로그인, 회원 페이지 API
 
-
-
 //////////////////////////////////////////////////////////
 
 
@@ -151,7 +149,7 @@ public class UserController {
         if(user_id == null) return "home";
         Optional<User> us = repository.findById(user_id);
         if(us == null) return "home";
-        model.addAttribute("user", us);
+        model.addAttribute("user", us.get());
 
         return "loginHome";
     }

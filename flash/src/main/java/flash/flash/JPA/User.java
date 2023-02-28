@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@Table
+@Table(name = "USER_TABLE")
 public class User {
     //추가
     public User() {
@@ -47,7 +47,6 @@ public class User {
     public long getUser_id() {
         return user_id;
     }
-
 
     public String getUid() {
         return uid;
