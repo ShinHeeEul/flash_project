@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -52,6 +53,7 @@ public class UserController {
     //login 화면<GET>
     @GetMapping("/login")
     public String Login(@ModelAttribute("loginForm") LoginForm loginForm) {
+        log.info("11121");
         return "loginform";
     }
 
@@ -59,7 +61,6 @@ public class UserController {
     @PostMapping("/login")
     public String Login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult,
                         HttpServletResponse response) {
-        log.info(loginForm.uid + " " + loginForm.upw);
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
         Optional<User> us = repository.findByuid(loginForm.getUid());
 
@@ -68,14 +69,12 @@ public class UserController {
         }
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
-            log.info("1111", "1111");
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginform";
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
         if(!us.get().getUpw().equals(loginForm.getUpw())) {
-            log.info("2222", "2222");
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginform";
         }
@@ -164,6 +163,54 @@ public class UserController {
         return "loginHome";
     }
 
+
+/*혜원 수정
+    @GetMapping("deleteUser")
+    public String deleteUserPage() {
+        return "myInfo/deleteUser";
+    }
+
+    @PostMapping("deleteUser")
+    public String deleteUser(HttpServletResponse request, HttpSession session) throws Exception {
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        boolean res = iInfoService.deleteUser(userEntity);
+
+        if (res == true) {
+
+            session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            return "redirect:/user/logIn";
+        } else {
+            return "myInfo/deleteUser";
+        }
+    }
+
+    @GetMapping("/session-info")
+    public String sessionInfo(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            return "세션이 없습니다.";
+        }
+
+        session.getAttributeNames().asIterator()
+                .forEachRemaining(name -> log.info("session name = {}, value = {}", name, session.getAttribute(name)));
+
+        log.info("sessionId = {}", session.getId());
+        log.info("getMaxInactiveInterval = {}", session.getMaxInactiveInterval());
+        log.info("creationTime = {}", new Date(session.getCreationTime()));
+        log.info("lastAccessedTime = {}", new Date(session.getLastAccessedTime()));
+        log.info("isNew = {}", session.isNew());
+
+        return "세션 출력";
+    }
+
+     혜원 수정 */
+
+
     @GetMapping("/user")
     @ResponseBody
     public String User_info(@CookieValue(name = ID, required = false) Long user_id)
@@ -199,7 +246,10 @@ public class UserController {
     }
 
     private class LoginForm {
+
+        @NotEmpty
         private String uid;
+        @NotEmpty
         private String upw;
 
         public String getUid() {
