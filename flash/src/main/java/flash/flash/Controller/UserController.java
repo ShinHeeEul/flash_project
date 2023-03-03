@@ -53,7 +53,6 @@ public class UserController {
     //login 화면<GET>
     @GetMapping("/login")
     public String Login(@ModelAttribute("loginForm") LoginForm loginForm) {
-        log.info("11121");
         return "loginform";
     }
 
@@ -61,12 +60,14 @@ public class UserController {
     @PostMapping("/login")
     public String Login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult,
                         HttpServletResponse response) {
+
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
         Optional<User> us = repository.findByuid(loginForm.getUid());
 
         if(bindingResult.hasErrors()) {
             return "loginform";
         }
+
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
@@ -84,8 +85,6 @@ public class UserController {
                 String.valueOf(us.get().getUser_id()));
         response.addCookie(user_idCookie);
 
-
-        //return "1";
         return "redirect:/";
     }
 
