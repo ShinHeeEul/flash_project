@@ -5,17 +5,17 @@
 </head>
 <body>
 <h2>로그인</h2>
-<form action = "/login" method ="post" th:object="${loginForm}">
+<form action = "/login" th:action method ="post" th:object="${loginForm}">
 
     <div th:if="${#fields.hasGlobalErrors()}">
         <strong> <p th:each="err : ${#fields.globalErrors()}" th:text="${err}" style="color:red">전체 오류 메시지</p> </strong>
     </div>
 
     user_id
-    <br><input type="text" id="user_id" name="user_id"/>
+    <br><input type="text" id="uid" name="uid" th:field="*{uid}"/>
     <br>
     password
-    <br><input type="text" id="password" name="password"/>
+    <br><input type="text" id="upw" name="upw" th:field="*{upw}"/>
 
     <div>
         <button type="submit">로그인</button>

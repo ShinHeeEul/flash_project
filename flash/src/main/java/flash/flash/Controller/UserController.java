@@ -4,7 +4,6 @@ package flash.flash.Controller;
 import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
 import flash.flash.JPA.UserRepository;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,8 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -56,23 +57,25 @@ public class UserController {
 
     //login API<POST>
     @PostMapping("/login")
-    //@ResponseBody
-    public String Login(@ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
+    public String Login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult,
                         HttpServletResponse response) {
+        log.info(loginForm.uid + " " + loginForm.upw);
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findByuid(loginForm.user_id);
+        Optional<User> us = repository.findByuid(loginForm.getUid());
 
         if(bindingResult.hasErrors()) {
             return "loginform";
         }
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
+            log.info("1111", "1111");
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginform";
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
-        if(!us.get().getUpw().equals(loginForm.user_pw)) {
+        if(!us.get().getUpw().equals(loginForm.getUpw())) {
+            log.info("2222", "2222");
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginform";
         }
@@ -119,6 +122,7 @@ public class UserController {
             //controller 경우
             return "redirect:/";
         }
+
         //없는 경우 repository에 저장 후 return
         //////////////////////////////////////////
         //user 객체 생성
@@ -195,7 +199,23 @@ public class UserController {
     }
 
     private class LoginForm {
-        private String user_id;
-        private String user_pw;
+        private String uid;
+        private String upw;
+
+        public String getUid() {
+            return uid;
+        }
+
+        public String getUpw() {
+            return upw;
+        }
+
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        public void setUpw(String upw) {
+            this.upw = upw;
+        }
     }
 }
