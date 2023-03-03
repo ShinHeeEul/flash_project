@@ -4,12 +4,14 @@ package flash.flash.Controller;
 import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
 import flash.flash.JPA.UserRepository;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -48,27 +50,31 @@ public class UserController {
 
     //login 화면<GET>
     @GetMapping("/login")
-    public String Login() {
-        return "/login.html";
+    public String Login(@ModelAttribute("loginForm") LoginForm loginForm) {
+        return "loginform";
     }
 
     //login API<POST>
     @PostMapping("/login")
     //@ResponseBody
-    public String Login(@RequestParam String user_id,
-                        @RequestParam String password, Model model,
+    public String Login(@ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
                         HttpServletResponse response) {
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findByuid(user_id);
+        Optional<User> us = repository.findByuid(loginForm.user_id);
 
+        if(bindingResult.hasErrors()) {
+            return "loginform";
+        }
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
-            return "0";
+            bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+            return "loginform";
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
-        if(!us.get().getUpw().equals(password)) {
-            return "0";
+        if(!us.get().getUpw().equals(loginForm.user_pw)) {
+            bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+            return "loginform";
         }
 
         //login 성공
@@ -188,4 +194,8 @@ public class UserController {
         return jsonArray.toString();
     }
 
+    private class LoginForm {
+        private String user_id;
+        private String user_pw;
+    }
 }
