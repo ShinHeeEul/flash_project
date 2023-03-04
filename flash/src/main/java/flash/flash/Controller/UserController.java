@@ -56,6 +56,15 @@ public class UserController {
         return "loginform";
     }
 
+    @GetMapping("/test")
+    public String Test(@RequestParam String test, Model model) {
+
+        test = "이거 안나오면 작동안되는 거임";
+        model.addAttribute("test", test);
+
+        return "test";
+    }
+
     //login API<POST>
     @PostMapping("/login")
     public String Login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult,
