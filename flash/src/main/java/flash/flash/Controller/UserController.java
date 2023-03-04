@@ -57,10 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public String Test(@RequestParam String test, Model model) {
-
-        test = "이거 안나오면 작동안되는 거임";
-        model.addAttribute("test", test);
+    public String Test(@ModelAttribute("test") String test) {
 
         return "test";
     }
