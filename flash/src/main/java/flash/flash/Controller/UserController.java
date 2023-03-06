@@ -4,6 +4,9 @@ package flash.flash.Controller;
 import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
 import flash.flash.JPA.UserRepository;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -52,7 +56,7 @@ public class UserController {
 
     //login 화면<GET>
     @GetMapping("/login")
-    public String Login(@ModelAttribute("loginForm") LoginForm loginForm) {
+    public String Login(@ModelAttribute("loginForm") @NotNull LoginForm loginForm) {
         return "loginform";
     }
 
@@ -250,27 +254,17 @@ public class UserController {
         return jsonArray.toString();
     }
 
+    @Getter @Setter
     private class LoginForm {
-
-        @NotEmpty
+        @NotNull
         private String uid;
-        @NotEmpty
+        @NotNull
         private String upw;
 
-        public String getUid() {
-            return uid;
-        }
-
-        public String getUpw() {
-            return upw;
-        }
-
-        public void setUid(String uid) {
+        public LoginForm(String uid, String upw) {
             this.uid = uid;
-        }
-
-        public void setUpw(String upw) {
             this.upw = upw;
         }
+
     }
 }
