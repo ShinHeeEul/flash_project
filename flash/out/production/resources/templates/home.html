@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
     <meta charset = "UTF-8">
 </head>
 <body>
 <h2>메인 화면</h2>
-<button type="button" onclick="location.href='/login'">로그인</button>
+<button type="button" th:onclick="|location.href='@{/login}'|">로그인</button>
 <button type="button" onclick="location.href='/signup.html'">회원가입</button>
 
 </body>

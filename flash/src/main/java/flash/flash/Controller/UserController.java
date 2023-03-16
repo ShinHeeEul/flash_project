@@ -4,9 +4,11 @@ package flash.flash.Controller;
 import flash.flash.JPA.Dementia;
 import flash.flash.JPA.User;
 import flash.flash.JPA.UserRepository;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -54,23 +55,19 @@ public class UserController {
 
     //login 화면<GET>
     @GetMapping("/login")
-    public String Login(@ModelAttribute("loginForm") @NotNull LoginForm loginForm) {
+    public String Login(@ModelAttribute("form") LoginForm form) {
         return "loginform";
     }
 
-    @GetMapping("/test")
-    public String Test(@ModelAttribute("test") String test) {
-
-        return "test";
-    }
 
     //login API<POST>
     @PostMapping("/login")
-    public String Login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult,
+    public String Login(@Valid @ModelAttribute LoginForm form, Model model,
+                        BindingResult bindingResult,
                         HttpServletResponse response) {
 
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
-        Optional<User> us = repository.findByuid(loginForm.getUid());
+        Optional<User> us = repository.findByuid(form.getUid());
 
         if(bindingResult.hasErrors()) {
             return "loginform";
@@ -83,7 +80,7 @@ public class UserController {
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
-        if(!us.get().getUpw().equals(loginForm.getUpw())) {
+        if(!us.get().getUpw().equals(form.getUpw())) {
             bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginform";
         }
@@ -252,17 +249,5 @@ public class UserController {
         return jsonArray.toString();
     }
 
-    @Getter @Setter
-    private class LoginForm {
-        @NotNull
-        private String uid;
-        @NotNull
-        private String upw;
 
-        public LoginForm(String uid, String upw) {
-            this.uid = uid;
-            this.upw = upw;
-        }
-
-    }
 }
