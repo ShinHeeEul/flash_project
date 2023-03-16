@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
 </head>
 <body>
 
-<form th:action method="post" enctype="multipart/form-data">
-  <ul>
-    음성 파일 이름<input type="text" name="file_name">
-    <br>
-    음성 파일<input type="file" name="file">
-  </ul>
+<form action="/upload" method="post" enctype="multipart/form-data">
 
+    <h2>음성 파일</h2>
+    <input type="file" id="voice_file" name="voice_file">
+  <br>
   <input type="submit"/>
 </form>
 
