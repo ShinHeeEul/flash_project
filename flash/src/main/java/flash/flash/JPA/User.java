@@ -16,7 +16,7 @@ public class User {
 
     }
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
     private String uid;
