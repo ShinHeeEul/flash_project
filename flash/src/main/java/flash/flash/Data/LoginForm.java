@@ -1,4 +1,4 @@
-package flash.flash.Controller;
+package flash.flash.Data;
 
 import lombok.Data;
 import lombok.Getter;

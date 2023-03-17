@@ -1,9 +1,8 @@
 package flash.flash.Controller;
 
 
-import flash.flash.JPA.Dementia;
-import flash.flash.JPA.User;
-import flash.flash.JPA.UserRepository;
+import flash.flash.Data.LoginForm;
+import flash.flash.JPA.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,6 +37,11 @@ public class UserController {
     //local
     @Autowired
     UserRepository repository;
+    @Autowired
+    DementiaRepository dementiaRepository;
+
+    @Autowired
+    ResultRepository resultRepository;
     ///////////////////////////////////
 
 
@@ -58,7 +62,7 @@ public class UserController {
 
     //login API<POST>
     @PostMapping("/login")
-    public String Login(@Valid @ModelAttribute LoginForm form, Model model,
+    public String Login(@Valid @ModelAttribute("form") LoginForm form,
                         BindingResult bindingResult,
                         HttpServletResponse response) {
 
@@ -217,9 +221,7 @@ public class UserController {
     {
 
         Optional<User> us = repository.findById(user_id);
-
-        Dementia dem = new Dementia();
-
+        Optional<Dementia> dem = dementiaRepository.findByUser_Uid(us.get().getUid());
 
         JSONArray jsonArray = null;
 
@@ -232,10 +234,9 @@ public class UserController {
             jsonObject.put("user_id", us.get().getUid());
             jsonObject.put("name", us.get().getUpw());
             //결과 데이터 query로 추출해서 반환해줘야함
-            //jsonObject.put("result",us.get().getResult_set());
+            if(!dem.equals(Optional.empty())) jsonObject.put("result",dem.get().getResult().getTest_result());
 
             jsonArray.put(jsonObject);
-
         }
 
         catch(Exception e) {

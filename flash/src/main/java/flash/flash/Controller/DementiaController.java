@@ -1,15 +1,14 @@
 package flash.flash.Controller;
 
+import flash.flash.JPA.*;
 import flash.flash.STT.NestRequestEntity;
 import flash.flash.STT.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +27,18 @@ import java.io.IOException;
 public class DementiaController {
 
 
+    final String ID = "ID";
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    DementiaRepository dementiaRepository;
+
+    @Autowired
+    ResultRepository resultRepository;
+
+
     //업로드 화면<GET>
     @GetMapping("/upload")
     public String Upload() {
@@ -37,9 +48,11 @@ public class DementiaController {
     //파일이 업로드 되었을 떄 동작하는 함수<POST>
     //이 부분은 아직 개선이 필요함
     @PostMapping("/upload")
-    @ResponseBody
+    //@ResponseBody
     public String saveFile(@RequestParam("voice_file") MultipartFile voice_file,
-                           HttpServletRequest request) throws IOException {
+                           HttpServletRequest request,
+                           @CookieValue(name = ID, required = false) Long user_id,
+                           Model model) throws IOException {
         String result = null;
         //파일이 있다면, 파일 위치를 동적으로 확인해서 서버에 저장
         if(!voice_file.isEmpty()) {
@@ -48,27 +61,56 @@ public class DementiaController {
             //log.info("file name = " + fullPath);
             //파일이 mp3 파일일 경우 stt로 보내 분석
             if(voice_file.getContentType().equals("audio/mpeg")) {
-                //전송 받은 파일로 분석 할 수 있게 하기
+
+                //전송 받은 파일로 분석
                 File Local_File = new File(fileDir);
                 voice_file.transferTo(Local_File);
+
                 //기존 있는 파일로 분석
                 //File Local_File = new File(fileDir);
+
+                //stt에 보내서 분석
                 SpeechToText stt = new SpeechToText();
                 NestRequestEntity requestEntity = new NestRequestEntity();
                 result = stt.upload(Local_File, requestEntity);
 
-                log.info(result);
+                //AI Model에 데이터 전송
+                String AI_ans = null;
 
-                return result;
+                /*
+                //AI Model 결과 Result Repository에 저장
+                Result res = Result.builder()
+                        .test_result(AI_ans)
+                        .status(1)
+                        .build();
+
+                // 데이터베이스에 결과 저장
+                Optional<User> us = userRepository.findById(user_id);
+                if(us == null) return "error";
+                Dementia dem = Dementia.builder().user(us.get())
+                        .result(res)
+                        .status(1)
+                        .user_dialog(0)
+                        .created_at(LocalDateTime.now())
+                        .build();
+                */
+
+                //결과 반환
+                model.addAttribute("result", result);
+                return "Analysis_Result";
+
+                //return result;
             }
         }
 
-        return "error";
+        return "redirect:/";
     }
 
     //분석 요청한 dementia의 result를 클라이언트에 반환하는 기능
     @PostMapping("/dementia/result")
-    public String res_result() {
-        return null;
+    @ResponseBody
+    public String res_result(@ModelAttribute String result) {
+        return result;
     }
+
 }

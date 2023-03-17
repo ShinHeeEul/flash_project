@@ -6,6 +6,11 @@
 <body>
 <h2>로그인</h2>
 <form action = "#" th:action="@{/login}" th:object="${form}" method ="post">
+
+  <div th:if="${#fields.hasGlobalErrors()}">
+    <strong> <p th:each="err : ${#fields.globalErrors()}" th:text="${err}" style="color:red">전체 오류 메시지</p> </strong>
+  </div>
+
   user_id
   <br><input type="text" id="uid" name="uid" th:field="*{uid}"/>
   <br>

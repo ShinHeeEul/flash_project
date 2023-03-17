@@ -1,6 +1,8 @@
 package flash.flash.JPA;
 
 
+import lombok.Builder;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -26,7 +28,11 @@ public class Dementia {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User id;
+    private User user;
+
+    //*********************************
+    //이거 뭐지?, user_dialog에 무슨 값이 들어가야될까?
+    //*********************************
     private long user_dialog;
 
     private int status;
@@ -34,32 +40,20 @@ public class Dementia {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    public Result getResult() {
+        return result;
+    }
+
+    @Builder
+    public Dementia(Result result, User user, long user_dialog, int status, LocalDateTime created_at) {
+        this.result = result;
+        this.user = user;
+        this.user_dialog = user_dialog;
+        this.status = status;
+        this.created_at = created_at;
+    }
+
     // Map: 데이터 저장 구조 중 한 종류. map은 key 값과 value값의 형태로 저장. Map<String,Object>에서 String은 key값의 자료형, Object는 value값의 자료형.
     //private Map<String,Object> result_set= new HashMap<>();
 
-
-    public Long getDementia_id() {
-        return dementia_id;
-    }
-
-
-    public User getId() {
-        return id;
-    }
-
-    public long getUser_dialog() {
-        return user_dialog;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    /*public Map<String, Object> getResult_set() {
-        return result_set;
-    }*/
 }

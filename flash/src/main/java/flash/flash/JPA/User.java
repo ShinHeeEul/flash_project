@@ -2,6 +2,7 @@ package flash.flash.JPA;
 
 
 import lombok.Builder;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,13 +11,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USER_TABLE")
+@Getter
 public class User {
     //추가
     public User() {
 
     }
     @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
     private String uid;
@@ -41,37 +43,5 @@ public class User {
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
-
-    public long getUser_id() {
-        return user_id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getUpw() {
-        return upw;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    /*public Map<String, Object> getResult_set() {
-        return result_set;
-    }*/
 }
 
