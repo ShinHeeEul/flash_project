@@ -21,7 +21,19 @@ import java.io.IOException;
 //기능 : 업로드 API(이 부분에서 stt 서버로 전달), 결과 반환 API
 
 //////////////////////////////////////////////////////////
+enum FILETYPE {
+    MP3("audio/mpeg"),
+    M4A("audio/x-m4a");
 
+    private String type;
+    FILETYPE(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
 @Controller
 @Slf4j
 public class DementiaController {
@@ -58,9 +70,10 @@ public class DementiaController {
         if(!voice_file.isEmpty()) {
             String fileDir = request.getServletContext().getRealPath("/upload");
             String fullPath = fileDir + "\\" + voice_file.getOriginalFilename();
-            //log.info("file name = " + fullPath);
-            //파일이 mp3 파일일 경우 stt로 보내 분석
-            if(voice_file.getContentType().equals("audio/mpeg")) {
+            //log.info("file name = " + voice_file.getContentType());
+            //파일이 m4a, mp3 파일일 경우 stt로 보내 분석
+            if((voice_file.getContentType().equals(FILETYPE.M4A.getType())) ||
+                    (voice_file.getContentType().equals(FILETYPE.MP3.getType()))) {
 
                 //전송 받은 파일로 분석
                 File Local_File = new File(fileDir);
