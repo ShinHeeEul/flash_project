@@ -30,10 +30,8 @@ public class Dementia {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //*********************************
-    //이거 뭐지?, user_dialog에 무슨 값이 들어가야될까?
-    //*********************************
-    private long user_dialog;
+    //분석할 음성 내용 넣어야 됨
+    private String user_dialog;
 
     private int status;
 
@@ -45,7 +43,7 @@ public class Dementia {
     }
 
     @Builder
-    public Dementia(Result result, User user, long user_dialog, int status, LocalDateTime created_at) {
+    public Dementia(Result result, User user, String user_dialog, int status, LocalDateTime created_at) {
         this.result = result;
         this.user = user;
         this.user_dialog = user_dialog;
