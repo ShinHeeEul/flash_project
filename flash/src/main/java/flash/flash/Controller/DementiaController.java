@@ -4,14 +4,18 @@ import flash.flash.JPA.*;
 import flash.flash.STT.NestRequestEntity;
 import flash.flash.STT.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
+import org.python.core.PyFunction;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
 
 
 //////////////////////////////////////////////////////////
@@ -38,7 +42,6 @@ enum FILETYPE {
 @Slf4j
 public class DementiaController {
 
-
     final String ID = "ID";
 
     @Autowired
@@ -64,7 +67,7 @@ public class DementiaController {
     public String saveFile(@RequestParam("voice_file") MultipartFile voice_file,
                            HttpServletRequest request,
                            @CookieValue(name = ID, required = false) Long user_id,
-                           Model model) throws IOException {
+                           Model model) throws Exception {
         String result = null;
         //파일이 있다면, 파일 위치를 동적으로 확인해서 서버에 저장
         if(!voice_file.isEmpty()) {
@@ -108,11 +111,15 @@ public class DementiaController {
                         .build();
                 */
 
+                //log.info(result);
+                JSONObject jsonObject = new JSONObject(result);
+                result = (String) jsonObject.get("text");
                 //결과 반환
+                WebSocketClient webSocketClient = new WebSocketClient();
+                webSocketClient.analysisSTT(result);
+
                 model.addAttribute("result", result);
                 return "Analysis_Result";
-
-                //return result;
             }
         }
 
@@ -122,8 +129,6 @@ public class DementiaController {
     //분석 요청한 dementia의 result를 클라이언트에 반환하는 기능
     @PostMapping("/dementia/result")
     @ResponseBody
-    public String res_result(@ModelAttribute String result) {
-        return result;
-    }
+    public String res_result(@ModelAttribute String result) { return result; }
 
 }
