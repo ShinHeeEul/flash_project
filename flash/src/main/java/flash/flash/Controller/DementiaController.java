@@ -4,10 +4,7 @@ import flash.flash.JPA.*;
 import flash.flash.STT.NestRequestEntity;
 import flash.flash.STT.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
-import netscape.javascript.JSObject;
 import org.json.JSONObject;
-import org.python.core.PyFunction;
-import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.nio.file.Paths;
 
 
 //////////////////////////////////////////////////////////
