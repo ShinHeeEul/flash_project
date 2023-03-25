@@ -1,6 +1,8 @@
 package flash.flash.Controller;
 
+
 import javax.websocket.*;
+import java.io.IOException;
 import java.net.URI;
 
 @ClientEndpoint
@@ -12,10 +14,13 @@ public class WebSocketClient {
         return message;
     }
 
-    public void analysisSTT (String result) throws Exception {
+    public void analysisSTT (String result) throws DeploymentException, IOException {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://localhost:8765"));
-        session.getBasicRemote().sendText(result);  // 서버에 메시지 전송
+        try {
+                Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://localhost:8765"));
+                session.getBasicRemote().sendText(result);  // 서버에 메시지 전송
+        } catch(Exception e) {e.printStackTrace(); //throw e;
+            }
 
     }
 }
