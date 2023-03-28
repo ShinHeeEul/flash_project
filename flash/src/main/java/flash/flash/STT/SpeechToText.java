@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 public class SpeechToText {
 
     //변경 내용 테스트
+    //변경 내용 테스트2
     // Clova Speech secret key
     private static final String SECRET = "744821a09ae44ef1ac33d9723fb78caa";
     // Clova Speech invoke URL
