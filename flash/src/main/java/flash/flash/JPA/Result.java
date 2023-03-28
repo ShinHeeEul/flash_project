@@ -14,6 +14,10 @@ import java.util.Map;
 @Getter
 public class Result {
 
+    public Result() {
+
+    }
+
     //추가
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

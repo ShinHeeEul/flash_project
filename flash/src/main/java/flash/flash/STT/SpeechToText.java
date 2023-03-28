@@ -1,6 +1,6 @@
 package flash.flash.STT;
 
-import java.io.File;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +30,12 @@ public class SpeechToText {
     private CloseableHttpClient httpClient = HttpClients.createDefault();
     private Gson gson = new Gson();
 
+
     private static final Header[] HEADERS = new Header[] {
             new BasicHeader("Accept", "application/json"),
             new BasicHeader("X-CLOVASPEECH-API-KEY", SECRET),
     };
+
 
     public static class Boosting {
         private String words;

@@ -81,6 +81,7 @@ public class DementiaController {
                 //기존 있는 파일로 분석
                 //File Local_File = new File(fileDir);
 
+
                 //stt에 보내서 분석
                 SpeechToText stt = new SpeechToText();
                 NestRequestEntity requestEntity = new NestRequestEntity();
@@ -89,6 +90,11 @@ public class DementiaController {
                 //AI Model에 데이터 전송
                 String AI_ans = null;
 
+                JSONObject jsonObject = new JSONObject(result);
+                result = (String) jsonObject.get("text");
+                //결과 반환
+                WebSocketClient webSocketClient = new WebSocketClient();
+                webSocketClient.analysisSTT(result);
                 /*
                 //AI Model 결과 Result Repository에 저장
                 Result res = Result.builder()
@@ -108,11 +114,6 @@ public class DementiaController {
                 */
 
                 //log.info(result);
-                JSONObject jsonObject = new JSONObject(result);
-                result = (String) jsonObject.get("text");
-                //결과 반환
-                WebSocketClient webSocketClient = new WebSocketClient();
-                webSocketClient.analysisSTT(result);
 
                 model.addAttribute("result", result);
                 return "Analysis_Result";

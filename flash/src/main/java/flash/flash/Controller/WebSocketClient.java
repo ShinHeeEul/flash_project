@@ -19,7 +19,7 @@ public class WebSocketClient {
         try {
                 Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://localhost:8765"));
                 session.getBasicRemote().sendText(result);  // 서버에 메시지 전송
-        } catch(Exception e) {e.printStackTrace(); //throw e;
+        } catch(Exception e) {//e.printStackTrace(); //throw e;
             }
 
     }
