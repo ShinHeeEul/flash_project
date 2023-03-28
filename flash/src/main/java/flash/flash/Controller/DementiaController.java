@@ -1,8 +1,8 @@
 package flash.flash.Controller;
 
 import flash.flash.JPA.*;
-import flash.flash.STT.NestRequestEntity;
-import flash.flash.STT.SpeechToText;
+import flash.flash.SpeechToText.NestRequestEntity;
+import flash.flash.SpeechToText.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
