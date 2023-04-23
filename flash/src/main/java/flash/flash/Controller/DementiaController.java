@@ -83,15 +83,17 @@ public class DementiaController {
 
 
                 //stt에 보내서 분석
-                SpeechToText stt = new SpeechToText();
-                NestRequestEntity requestEntity = new NestRequestEntity();
-                result = stt.upload(Local_File, requestEntity);
+                //SpeechToText stt = new SpeechToText();
+                //NestRequestEntity requestEntity = new NestRequestEntity();
+                //result = stt.upload(Local_File, requestEntity);
+
+                result = "test";
 
                 //AI Model에 데이터 전송
                 String AI_ans = null;
 
-                JSONObject jsonObject = new JSONObject(result);
-                result = (String) jsonObject.get("text");
+                //JSONObject jsonObject = new JSONObject(result);
+                //result = (String) jsonObject.get("text");
                 //결과 반환
                 WebSocketClient webSocketClient = new WebSocketClient();
                 webSocketClient.analysisSTT(result);
