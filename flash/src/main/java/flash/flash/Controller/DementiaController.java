@@ -132,7 +132,7 @@ public class DementiaController {
     @ResponseBody
     public String ModifiedText(@ModelAttribute("result") ArrayList<TextbySpeaker> textbySpeakers) throws DeploymentException, IOException {
 
-            return result;
+            return null;
             //AI Model에 데이터 전송
             //String AI_ans = null;
 
