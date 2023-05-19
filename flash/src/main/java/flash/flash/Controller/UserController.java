@@ -1,7 +1,7 @@
 package flash.flash.Controller;
 
 
-import flash.flash.Data.LoginForm;
+import flash.flash.Model.LoginForm;
 import flash.flash.JPA.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;

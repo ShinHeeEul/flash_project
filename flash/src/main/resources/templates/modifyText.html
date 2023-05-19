@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>음성 수정</h2>
+
+
+<form action = "#" th:action="@{/modified}" th:object="${result}">
+<tr th:each="tbs : ${seperate}" >
+
+    <th:block th:if = "${tbs.name == 'A'}"   >
+        <div style="float:left;background-color:MintCream;margin-left:500px">
+            name :
+            <td th:text="${tbs.name}">이름란</td>
+            <br/>
+            text :
+            <textarea  th:text ="${tbs.text}">문자란</textarea>
+            <br/>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+
+    </th:block>
+
+    <th:block th:unless = "${tbs.name == 'A'}">
+        <div style="float:right;background-color:GhostWhite;margin-right:500px">
+            name :
+            <td th:text="${tbs.name}">이름란</td>
+            <br/>
+            text :
+            <textarea th:text ="${tbs.text}">문자란</textarea>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+    </th:block>
+    </tr>
+
+</tr>
+    <button type="submit">수정하기</button>
+</form>
+
+</body>
+</html>

@@ -1,9 +1,12 @@
 package flash.flash.Controller;
 
 import flash.flash.JPA.*;
-import flash.flash.SpeechToText.NestRequestEntity;
-import flash.flash.SpeechToText.SpeechToText;
+import flash.flash.Model.FILETYPE;
+import flash.flash.Model.TextbySpeaker;
+import flash.flash.STT.NestRequestEntity;
+import flash.flash.STT.SpeechToText;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.DeploymentException;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////
@@ -21,19 +28,6 @@ import java.io.*;
 //기능 : 업로드 API(이 부분에서 stt 서버로 전달), 결과 반환 API
 
 //////////////////////////////////////////////////////////
-enum FILETYPE {
-    MP3("audio/mpeg"),
-    M4A("audio/x-m4a");
-
-    private String type;
-    FILETYPE(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-}
 @Controller
 @Slf4j
 public class DementiaController {
@@ -83,20 +77,71 @@ public class DementiaController {
 
 
                 //stt에 보내서 분석
-                //SpeechToText stt = new SpeechToText();
-                //NestRequestEntity requestEntity = new NestRequestEntity();
-                //result = stt.upload(Local_File, requestEntity);
+                SpeechToText stt = new SpeechToText();
+                NestRequestEntity requestEntity = new NestRequestEntity();
+                result = stt.upload(Local_File, requestEntity);
 
-                result = "test";
+                //result = "test";
+                //해당 text를 view로 반환
+                //log.info("result : " + result);
 
-                //AI Model에 데이터 전송
-                String AI_ans = null;
+                ArrayList<TextbySpeaker> seperate = seperateText(result);
 
-                //JSONObject jsonObject = new JSONObject(result);
-                //result = (String) jsonObject.get("text");
-                //결과 반환
-                WebSocketClient webSocketClient = new WebSocketClient();
-                webSocketClient.analysisSTT(result);
+
+                model.addAttribute("seperate", seperate);
+                return "modifyText";
+            }
+        }
+
+        return "redirect:/";
+    }
+
+    private static ArrayList<TextbySpeaker> seperateText(String result) {
+
+        ArrayList<TextbySpeaker> speakerRepository = new ArrayList<>();
+
+        JSONObject jsonObject = new JSONObject(result);
+        JSONArray jsonArray = jsonObject.getJSONArray("segments");
+
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            TextbySpeaker tbs = new TextbySpeaker();
+            boolean b = false;
+            String name = obj.getJSONObject("speaker").getString("name");
+            String text = obj.getString("text");
+            for(TextbySpeaker tmp : speakerRepository) {
+                if(tmp.getName() == name) {
+                    tbs = tmp;
+                     b= true;
+                }
+            }
+            tbs.addText(text);
+            if(!b) {
+                tbs.setName(name);
+                speakerRepository.add(tbs);
+            }
+        }
+
+        return speakerRepository;
+    }
+
+    //view에서 수정한 파일이 오면 해당 데이터 받아서 처리
+
+    @PostMapping("/modified")
+    @ResponseBody
+    public String ModifiedText(@ModelAttribute("result") ArrayList<TextbySpeaker> textbySpeakers) throws DeploymentException, IOException {
+
+            return result;
+            //AI Model에 데이터 전송
+            //String AI_ans = null;
+
+           // JSONObject jsonObject = new JSONObject(result);
+            //result = (String) jsonObject.get("text");
+            //결과 반환
+            //WebSocketClient webSocketClient = new WebSocketClient();
+           // webSocketClient.analysisSTT(result);
+
                 /*
                 //AI Model 결과 Result Repository에 저장
                 Result res = Result.builder()
@@ -115,14 +160,8 @@ public class DementiaController {
                         .build();
                 */
 
-                //log.info(result);
-
-                model.addAttribute("result", result);
-                return "Analysis_Result";
-            }
-        }
-
-        return "redirect:/";
+        //log.info(result);
+        //return "Analysis_Result";
     }
 
     //분석 요청한 dementia의 result를 클라이언트에 반환하는 기능
