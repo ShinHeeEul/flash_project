@@ -6,9 +6,9 @@
 <body>
 <h2>메인 화면</h2>
 <h4 th:incline="text">현재 사용자 : <span th:remove="tag" th:text="${user.name}">로그인 사용자 이름</span>!</span></h4>
-<button type="button" onclick="location.href='/user'">회원정보</button>
-<button type="button" onclick="location.href='/upload'">파일 업로드</button>
-<form th:action="@{/logout}" method="post">
+<button type="button" onclick="location.href='/user/'">회원정보</button>
+<button type="button" onclick="location.href='/dementia/upload'">파일 업로드</button>
+<form th:action="@{/user/logout}" method="post">
     <button type="submit">
         로그아웃
     </button>

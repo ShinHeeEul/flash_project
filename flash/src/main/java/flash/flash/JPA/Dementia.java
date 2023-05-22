@@ -2,13 +2,10 @@ package flash.flash.JPA;
 
 
 import lombok.Builder;
-import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @Table(name = "DEMENTIA_TABLE")

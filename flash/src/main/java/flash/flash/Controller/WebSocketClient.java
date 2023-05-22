@@ -1,16 +1,8 @@
 package flash.flash.Controller;
 
 
-import flash.flash.JPA.DementiaRepository;
-import flash.flash.JPA.ResultRepository;
-import flash.flash.JPA.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;

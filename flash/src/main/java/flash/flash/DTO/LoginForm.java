@@ -1,4 +1,4 @@
-package flash.flash.Model;
+package flash.flash.DTO;
 
 import lombok.Data;
 import lombok.Getter;

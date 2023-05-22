@@ -1,12 +1,16 @@
 package flash.flash.Controller;
 
 
-import flash.flash.Model.LoginForm;
+import com.google.api.client.json.Json;
+import flash.flash.DTO.LoginForm;
 import flash.flash.JPA.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 //////////////////////////////////////////////////////////
 
@@ -30,6 +35,7 @@ import java.util.Optional;
 
 @Controller
 @Slf4j
+@RequestMapping("/user")
 public class UserController {
 
     ///////////////////////////////////
@@ -88,7 +94,9 @@ public class UserController {
         //login 성공
         Cookie user_idCookie = new Cookie(ID,
                 String.valueOf(us.get().getUser_id()));
+        user_idCookie.setPath("/");
         response.addCookie(user_idCookie);
+
 
         return "redirect:/";
     }
@@ -98,6 +106,7 @@ public class UserController {
     public String logout(HttpServletResponse response) {
         Cookie cookie = new Cookie(ID,null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         response.addCookie(cookie);
         return "redirect:/";
     }
@@ -110,9 +119,9 @@ public class UserController {
 
     //회원가입 API<POST>
     @PostMapping("/signup")
-    public String Sign(@RequestParam String nickname,
-                       @RequestParam String user_id,
-                       @RequestParam String password, Model model) {
+    public ResponseEntity<User> Sign(@RequestParam String nickname,
+                                     @RequestParam String user_id,
+                                     @RequestParam String password, Model model) {
 
         //회원가입 요청이 오면
         //repository에 user_id 중복이 있나 확인을 하고
@@ -123,7 +132,9 @@ public class UserController {
             //restController 경우 에러 메세지로 0 반환
             //return "0";
             //controller 경우
-            return "redirect:/";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create("redirect:/"));
+            return new ResponseEntity<>(headers, HttpStatus.OK);
         }
 
         //없는 경우 repository에 저장 후 return
@@ -148,24 +159,12 @@ public class UserController {
         //restController 경우 정상 메세지로 1 반환
         //return "1";
         //controller 경우 html 파일 return
-        return "/signup";
+        return new ResponseEntity<>(user, null, HttpStatus.OK);
     }
 
     //회원페이지
 
-    @GetMapping("/")
-    public String homeLogin(
-            @CookieValue(name = ID, required = false) Long user_id,
-            Model model)
-    {
 
-        if(user_id == null) return "home";
-        Optional<User> us = repository.findById(user_id);
-        if(us == null) return "home";
-        model.addAttribute("user", us.get());
-
-        return "loginHome";
-    }
 
 
 /*혜원 수정
@@ -215,7 +214,7 @@ public class UserController {
      혜원 수정 */
 
 
-    @GetMapping("/user")
+    @GetMapping("/")
     @ResponseBody
     public String User_info(@CookieValue(name = ID, required = false) Long user_id)
     {
@@ -236,7 +235,18 @@ public class UserController {
             //결과 데이터 query로 추출해서 반환해줘야함
             if(!dem.equals(Optional.empty())) jsonObject.put("result",dem.get().getResult().getTest_result());
 
+
+
             jsonArray.put(jsonObject);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("date", LocalDateTime.now());
+            jsonObject1.put("testResult","high");
+            jsonArray.put(jsonObject1);
+            jsonObject1 = new JSONObject();
+            jsonObject1.put("date",LocalDateTime.of(2022,01,01,01,01) );
+            jsonObject1.put("testResult","low");
+
+            jsonArray.put(jsonObject1);
         }
 
         catch(Exception e) {

@@ -1,4 +1,4 @@
-package flash.flash.Model;
+package flash.flash.DTO;
 
 public enum FILETYPE {
 
