@@ -10,6 +10,14 @@
 
 ### System Architecture
   ![afterSystemArch](https://user-images.githubusercontent.com/83682424/228255833-8bfec615-5943-449f-8097-4cb91fb308ca.jpg)
+  
+### Domain Model
+#### Client
+![beforeClientClassDiagram](https://github.com/ShinHeeEul/flash_project/assets/83682424/ddcae9e7-0a60-4328-ac8c-529e179780d3)
+
+#### Server
+![beforeServerClassDiagram](https://github.com/ShinHeeEul/flash_project/assets/83682424/51a52b19-4e23-41e6-8b2a-3d9721b9f146)
+
 
 ## Environment
 ### Hardware
