@@ -35,9 +35,7 @@
   > Back-end,front-end : Intellij <br>
   > Server : Local Environment -> AWS <br>
   > AI Model : Anaconda, Jupyter NoteBook <br>
-  
-## Prerequisite
-  > 개발 완료후 docker 이미지 파일로 제작하여 따로 패키지 설치 등은 필요 없게 개발 에정
+  > docker를 통해 이미지화
   
 ## Usage
 > 현재 로컬 환경에서 개발 <br>
