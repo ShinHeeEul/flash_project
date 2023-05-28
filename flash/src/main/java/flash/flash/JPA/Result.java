@@ -2,6 +2,7 @@ package flash.flash.JPA;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "RESULT_TABLE")
 @Getter
+@Setter
 public class Result {
 
     public Result() {
@@ -26,6 +28,8 @@ public class Result {
     private String test_result;
 
     private int status;
+
+
 
     @CreationTimestamp
     private LocalDateTime created_at;

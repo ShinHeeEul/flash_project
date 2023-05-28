@@ -31,13 +31,13 @@
         <br/>
     </th:block>
 
-    <th:block th:unless = "${tbs.name == 'A'}">
+    <th:block th:if = "${tbs.name == 'B'}">
         <div style="float:right;background-color:GhostWhite;margin-right:500px">
             name :
             <td id="nameB" name = "nameB" th:text="${tbs.name}">이름란</td>
             <br/>
             text :
-            <textarea id="textB" name = "nameB" th:text ="${tbs.text}">문자란</textarea>
+            <textarea id="textB" name = "textB" th:text ="${tbs.text}">문자란</textarea>
         </div>
 
         <br/>

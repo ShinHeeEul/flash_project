@@ -91,6 +91,11 @@ public class UserController {
             return "loginform";
         }
 
+        if(us.get().getStatus() == 0) {
+            bindingResult.reject("loginFail", "삭제된 회원입니다.");
+            return "loginform";
+        }
+
         //login 성공
         Cookie user_idCookie = new Cookie(ID,
                 String.valueOf(us.get().getUser_id()));
@@ -163,55 +168,22 @@ public class UserController {
     }
 
     //회원페이지
+//혜원 수정
+    @PatchMapping("/delete")
+    public ResponseEntity<String> deleteUserPage(@CookieValue(value = ID, required = false) long user_id) {
 
+        repository.updateStatusByStatus(0);
 
-
-
-/*혜원 수정
-    @GetMapping("deleteUser")
-    public String deleteUserPage() {
-        return "myInfo/deleteUser";
+        return new ResponseEntity<>(repository.findById(user_id).get().getStatus() + "", null, HttpStatus.OK);
     }
 
-    @PostMapping("deleteUser")
-    public String deleteUser(HttpServletResponse request, HttpSession session) throws Exception {
-        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+    @PatchMapping("/resultdelete")
+    public ResponseEntity<String> deleteResult(@CookieValue(value = ID, required = false) long user_id, @RequestParam("result_id") long result_id) {
 
-        boolean res = iInfoService.deleteUser(userEntity);
+        resultRepository.updateStatusBy(0);
 
-        if (res == true) {
-
-            session = request.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
-            return "redirect:/user/logIn";
-        } else {
-            return "myInfo/deleteUser";
-        }
+        return new ResponseEntity<>(resultRepository.findById(user_id).get().getStatus() + "", null, HttpStatus.OK);
     }
-
-    @GetMapping("/session-info")
-    public String sessionInfo(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            return "세션이 없습니다.";
-        }
-
-        session.getAttributeNames().asIterator()
-                .forEachRemaining(name -> log.info("session name = {}, value = {}", name, session.getAttribute(name)));
-
-        log.info("sessionId = {}", session.getId());
-        log.info("getMaxInactiveInterval = {}", session.getMaxInactiveInterval());
-        log.info("creationTime = {}", new Date(session.getCreationTime()));
-        log.info("lastAccessedTime = {}", new Date(session.getLastAccessedTime()));
-        log.info("isNew = {}", session.isNew());
-
-        return "세션 출력";
-    }
-
-     혜원 수정 */
 
 
     @GetMapping("/")
@@ -220,7 +192,8 @@ public class UserController {
     {
 
         Optional<User> us = repository.findById(user_id);
-        Optional<Dementia> dem = dementiaRepository.findByUser_Uid(us.get().getUid());
+        List<Dementia> dem = dementiaRepository.findByUserIdWithJoin(user_id);
+
 
         JSONArray jsonArray = null;
 
@@ -228,16 +201,21 @@ public class UserController {
             //JSONArray 객체 생성
             jsonArray = new JSONArray();
 
-            JSONObject jsonObject = new JSONObject();
-
-            jsonObject.put("user_id", us.get().getUid());
-            jsonObject.put("name", us.get().getUpw());
             //결과 데이터 query로 추출해서 반환해줘야함
-            if(!dem.equals(Optional.empty())) jsonObject.put("result",dem.get().getResult().getTest_result());
+            for(Dementia d : dem) {
 
+                JSONObject jsonObject = new JSONObject();
 
+                jsonObject.put("user_id", us.get().getUid());
+                jsonObject.put("name", us.get().getUpw());
+                log.info("d : " + d.getDementia_id());
+                log.info("result : " + d.getResult().getTest_result());
+                if(d.getStatus() == 0) continue;
+                jsonObject.put("dementia_id", d.getDementia_id());
+                jsonObject.put("result", d.getResult().getTest_result());
+                jsonArray.put(jsonObject);
+            }
 
-            jsonArray.put(jsonObject);
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("date", LocalDateTime.now());
             jsonObject1.put("testResult","high");

@@ -3,6 +3,7 @@ package flash.flash.JPA;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "USER_TABLE")
 @Getter
+@Setter
 public class User {
     //추가
     public User() {

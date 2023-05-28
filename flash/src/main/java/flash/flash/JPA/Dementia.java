@@ -2,12 +2,16 @@ package flash.flash.JPA;
 
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "DEMENTIA_TABLE")
 public class Dementia {
 
@@ -19,7 +23,7 @@ public class Dementia {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long dementia_id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "result_id")
     private Result result;
 
@@ -35,9 +39,6 @@ public class Dementia {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    public Result getResult() {
-        return result;
-    }
 
     @Builder
     public Dementia(Result result, User user, String user_dialog, int status, LocalDateTime created_at) {

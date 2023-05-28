@@ -1,14 +1,13 @@
 package flash.flash.DTO;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 
 
+
+@Data
 @Getter
 @Setter
 public class TextbySpeaker {
