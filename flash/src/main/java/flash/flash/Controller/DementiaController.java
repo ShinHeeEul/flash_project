@@ -63,7 +63,7 @@ public class DementiaController {
     @PostMapping("/upload")
     //@ResponseBody
     public ResponseEntity<ArrayList<TextbySpeaker>> /*String*/ saveFile(@RequestParam("voice_file") MultipartFile voice_file,
-                                   HttpServletRequest request, Model model) throws Exception {
+                                   HttpServletRequest request) throws Exception {
         String result = "";
         //파일이 있다면, 파일 위치를 동적으로 확인해서 서버에 저장
         if(!voice_file.isEmpty()) {
@@ -95,8 +95,8 @@ public class DementiaController {
 
                 ArrayList<TextbySpeaker> seperate = seperateText(result);
 
-                model.addAttribute("seperate", seperate);
-                //return new ResponseEntity<>(seperate, new HttpHeaders(), HttpStatus.OK);
+                //model.addAttribute("seperate", seperate);
+                return new ResponseEntity<>(seperate, new HttpHeaders(), HttpStatus.OK);
             }
         }
         //return "modifyText";
