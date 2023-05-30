@@ -169,3 +169,4 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle
 /src/main/java/flash/flash/SpeechToText/
+/src/dementia572.pt

@@ -22,6 +22,7 @@ public class WebSocketClient {
 
         float accuracy = Float.parseFloat(message);
 
+        accuracy = 1- accuracy;
         log.info("accuracy : " + accuracy);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         try {
@@ -35,11 +36,13 @@ public class WebSocketClient {
 
     public void analysisSTT (String result) throws DeploymentException, IOException {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        result = result.substring(1,result.length()-2);
         try {
+            log.info("Toserver : " + result);
             Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://localhost:8765"));
             session.getBasicRemote().sendText(result);  // 서버에 메시지 전송
         } catch(Exception e) {
-            //e.printStackTrace(); //throw e;
+            e.printStackTrace(); throw e;
         }
 
     }

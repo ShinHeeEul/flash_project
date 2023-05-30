@@ -68,32 +68,29 @@ public class UserController {
 
     //login API<POST>
     @PostMapping("/login")
-    public String Login(@Valid @ModelAttribute("form") LoginForm form,
-                        BindingResult bindingResult,
+    public ResponseEntity<Boolean> Login(@Valid @RequestParam("uid") String uid,
+                                         @RequestParam("upw") String upw,
                         HttpServletResponse response) {
 
+        LoginForm form = new LoginForm();
+        form.setUid(uid);
+        form.setUpw(upw);
         //데이터베이스로부터 해당 user_id에 해당하는 user가 있나 확인
         Optional<User> us = repository.findByuid(form.getUid());
 
-        if(bindingResult.hasErrors()) {
-            return "loginform";
-        }
 
         //login 실패 : user_id 없음
         if(us.equals(Optional.empty())) {
-            bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
-            return "loginform";
+            return new ResponseEntity<>(false, null, HttpStatus.OK);
         }
 
         //login 실패 : user_id는 있으나 비밀번호 틀림
         if(!us.get().getUpw().equals(form.getUpw())) {
-            bindingResult.reject("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
-            return "loginform";
+            return new ResponseEntity<>(false, null, HttpStatus.OK);
         }
 
         if(us.get().getStatus() == 0) {
-            bindingResult.reject("loginFail", "삭제된 회원입니다.");
-            return "loginform";
+            return new ResponseEntity<>(false, null, HttpStatus.OK);
         }
 
         //login 성공
@@ -103,7 +100,7 @@ public class UserController {
         response.addCookie(user_idCookie);
 
 
-        return "redirect:/";
+        return new ResponseEntity<>(true, null, HttpStatus.OK);
     }
 
     //LogOut 화면<POST>
@@ -206,25 +203,13 @@ public class UserController {
 
                 JSONObject jsonObject = new JSONObject();
 
-                jsonObject.put("user_id", us.get().getUid());
-                jsonObject.put("name", us.get().getUpw());
                 log.info("d : " + d.getDementia_id());
-                log.info("result : " + d.getResult().getTest_result());
+                log.info("TestResult : " + d.getResult().getTest_result());
                 if(d.getStatus() == 0) continue;
-                jsonObject.put("dementia_id", d.getDementia_id());
-                jsonObject.put("result", d.getResult().getTest_result());
+                jsonObject.put("TestResult", d.getResult().getTest_result());
+                jsonObject.put("date", d.getCreated_at());
                 jsonArray.put(jsonObject);
             }
-
-            JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("date", LocalDateTime.now());
-            jsonObject1.put("testResult","high");
-            jsonArray.put(jsonObject1);
-            jsonObject1 = new JSONObject();
-            jsonObject1.put("date",LocalDateTime.of(2022,01,01,01,01) );
-            jsonObject1.put("testResult","low");
-
-            jsonArray.put(jsonObject1);
         }
 
         catch(Exception e) {
