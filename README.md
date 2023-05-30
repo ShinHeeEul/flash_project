@@ -1,4 +1,7 @@
-# flash_project
+# flash_project (Server)
+
+## flash_project IOS GitHub Link
+https://github.com/kihwn/flash_iOS
 
 ## Description
 ### Project Name
