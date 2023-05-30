@@ -27,26 +27,33 @@
 ### Software
   > Back-end : Spring frameWork, Spring Boot, Spring Web, Lombok<br>
   > DB : H2 Database<br>
-  > front-end : html, css, javascript <br>
+  > front-end : swift, html, css, javascript <br>
   > AI Model(BERT) : cuda, pytorch, transformer, tensorflow <br> 
   > Training Data : AI Hub
   
 ### developed Environment
   > Back-end,front-end : Intellij <br>
   > Server : Local Environment -> AWS <br>
+  > client : xcode
   > AI Model : Anaconda, Jupyter NoteBook <br>
   > docker를 통해 이미지화
   
 ## Usage
-> 현재 로컬 환경에서 개발 <br>
 
- 1. H2 DB, Jupyter Notebook 실행
- 2. Server의 flashApplication.java의 main 메서드 실행
- 3. localhost:8080으로 접속 후, 회원가입
- 4. 로그인 후 첨부란을 통해 사용자 음성 데이터 첨부
+ 1. IOS 앱 다운
+ 2. 실행 후, 회원가입
+ 3. 로그인 후 첨부란을 통해 사용자 음성 데이터 첨부
+ 4. 텍스트로 변환된 음성 데이터 확인 후 분석 요청
  5. 분석 결과 확인
 
 ## Usage Example
+## html
 ![exampleClient](https://user-images.githubusercontent.com/83682424/228263906-079770d6-1b21-42d8-9c66-d5068a101378.jpg)
+## IOS
+![４](https://github.com/ShinHeeEul/flash_project/assets/83682424/659b7db1-8501-45a8-808f-aea4400e4db8)
+ ![３](https://github.com/ShinHeeEul/flash_project/assets/83682424/aa697fff-fd84-419e-a44d-3c634aa5093b)<br>
+ ![２](https://github.com/ShinHeeEul/flash_project/assets/83682424/e548ee14-fa0d-41e2-b994-56cc89179532)
+ ![１](https://github.com/ShinHeeEul/flash_project/assets/83682424/4b1ed8b3-1047-45c1-bdfb-cf79c2fc3ec1)
 
-  
+
+
