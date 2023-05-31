@@ -101,8 +101,8 @@ public class DementiaController {
                 //model.addAttribute("seperate", seperate);
 
                 //AI Model에 데이터 전송
-                WebSocketClient webSocketClient = new WebSocketClient();
-                webSocketClient.analysisSTT(result);
+               //WebSocketClient webSocketClient = new WebSocketClient();
+                // webSocketClient.analysisSTT(result);
 
                 return new ResponseEntity<>(seperate, new HttpHeaders(), HttpStatus.OK);
             }
@@ -160,7 +160,8 @@ public class DementiaController {
         JSONObject jsonObject = new JSONObject(result);
         JSONArray jsonArray = jsonObject.getJSONArray("segments");
 
-
+        speakerRepository.add(new TextbySpeaker("A"));
+        speakerRepository.add(new TextbySpeaker("B"));
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             TextbySpeaker tbs = new TextbySpeaker();
@@ -224,8 +225,8 @@ public class DementiaController {
     }
     @PostMapping("/modified")
     @ResponseBody
-    public void ModifiedText(@ModelAttribute("result") TextbySpeakerList textbySpeakerList,
-                                   @CookieValue(name = ID, required = false) Long user_id) throws DeploymentException, IOException {
+    public ResponseEntity<Boolean> ModifiedText(@ModelAttribute("result") TextbySpeakerList textbySpeakerList,
+                                                @CookieValue(name = ID, required = false) Long user_id) throws DeploymentException, IOException {
         String radio = textbySpeakerList.getRadio();
         String result = "";
 
@@ -250,6 +251,8 @@ public class DementiaController {
                 break;
         }
 
+        if(result.equals("")) result += "[]\n";
+
         d = Dementia.builder().
                 created_at(LocalDateTime.now()).
                 status(1).
@@ -257,11 +260,18 @@ public class DementiaController {
                 user_dialog(result).
                 build();
 
-        //AI Model에 데이터 전송
-        WebSocketClient webSocketClient = new WebSocketClient();
-        webSocketClient.analysisSTT(result);
+        try {
+            //AI Model에 데이터 전송
+            WebSocketClient webSocketClient = new WebSocketClient();
+            webSocketClient.analysisSTT(result);
 
-        log.info(result);
+            log.info(result);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(false, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity(true, new HttpHeaders(), HttpStatus.OK);
     }
 
 
