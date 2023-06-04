@@ -146,8 +146,9 @@ public class DementiaController {
         resultRepository.save(r);
         d.setResult(r);
 
-
-        log.info("result1 : " + res);
+        log.info("DB user : " + d.getUser().getName());
+        log.info("DB result : " + res);
+        log.info("DB created_at : " + LocalDateTime.now());
 
 
         dementiaRepository.save(d);
@@ -225,7 +226,7 @@ public class DementiaController {
     }
     @PostMapping("/modified")
     @ResponseBody
-    public ResponseEntity<Boolean> ModifiedText(@ModelAttribute("result") TextbySpeakerList textbySpeakerList,
+    public ResponseEntity<Boolean> ModifiedText(@RequestBody TextbySpeakerList textbySpeakerList,
                                                 @CookieValue(name = ID, required = false) Long user_id) throws DeploymentException, IOException {
         String radio = textbySpeakerList.getRadio();
         String result = "";

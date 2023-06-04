@@ -39,7 +39,8 @@ public class WebSocketClient {
         result = result.substring(1,result.length()-2);
         try {
             log.info("Toserver : " + result);
-            Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://localhost:8765"));
+            //ip 변경해야될 수도
+            Session session = container.connectToServer(WebSocketClient.class, URI.create("ws://13.209.75.213:8765"));
             session.getBasicRemote().sendText(result);  // 서버에 메시지 전송
         } catch(Exception e) {
             e.printStackTrace(); throw e;
