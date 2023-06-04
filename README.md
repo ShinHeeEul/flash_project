@@ -12,8 +12,8 @@ https://github.com/kihwn/flash_iOS
 > 통화 음성 등의 치매 예상 환자의 음성 파일을 클라이언트에 넣으면 이를 서버로 전달하여 Clova Speech 서비스를 이용해 Text로 전환, AI Model에 넣어 치매인지 아닌지 판단을 하여 결과를 반환해주는 프로젝트<br>
 
 ### System Architecture
-  ![afterSystemArch](https://user-images.githubusercontent.com/83682424/228255833-8bfec615-5943-449f-8097-4cb91fb308ca.jpg)
-  
+![After System Architecture](https://github.com/ShinHeeEul/flash_project/assets/83682424/c76e27c2-ca1a-4a4e-b66b-95a764473bf6)
+
 ### Domain Model
 #### Client
 ![beforeClientClassDiagram](https://github.com/ShinHeeEul/flash_project/assets/83682424/ddcae9e7-0a60-4328-ac8c-529e179780d3)
@@ -36,10 +36,10 @@ https://github.com/kihwn/flash_iOS
   
 ### developed Environment
   > Back-end,front-end : Intellij <br>
-  > Server : Local Environment -> AWS <br>
+  > Server : Local Environment, AWS EC2(t2.micro, g3.4xlarge <br>
   > client : xcode
   > AI Model : Anaconda, Jupyter NoteBook <br>
-  > docker를 통해 이미지화
+  > docker
   
 ## Usage
 
