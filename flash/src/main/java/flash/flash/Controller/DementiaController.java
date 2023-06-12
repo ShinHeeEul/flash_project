@@ -106,13 +106,6 @@ public class DementiaController {
 
                 return new ResponseEntity<>(seperate, new HttpHeaders(), HttpStatus.OK);
             }
-
-            ArrayList<TextbySpeaker> arr = new ArrayList<>();
-            TextbySpeaker ts = new TextbySpeaker();
-            ts.setName(voice_file.getContentType());
-            arr.add(ts);
-
-            return new ResponseEntity<>(arr, new HttpHeaders(), HttpStatus.OK);
         }
         //return "modifyText";
         ArrayList<TextbySpeaker> arr = new ArrayList<>();
@@ -231,10 +224,11 @@ public class DementiaController {
         String radio = textbySpeakerList.getRadio();
         String result = "";
 
-        log.info("nameA" + textbySpeakerList.getNameA());
-        log.info("TextA" + textbySpeakerList.getTextA());
-        log.info("nameB" + textbySpeakerList.getNameB());
-        log.info("TextB" + textbySpeakerList.getTextB());
+        log.info("radio : " + radio);
+        log.info("nameA : " + textbySpeakerList.getNameA());
+        log.info("TextA : " + textbySpeakerList.getTextA());
+        log.info("nameB : " + textbySpeakerList.getNameB());
+        log.info("TextB : " + textbySpeakerList.getTextB());
 
         switch(radio) {
             case "A":
@@ -292,9 +286,13 @@ public class DementiaController {
                 recentDem = dementia;
             }
         }
-
-        if(recentDem != null) return recentDem.getResult().getTest_result();
-        return null;
+        JSONObject jo = new JSONObject();
+        jo.put("date", recentDem.getCreated_at());
+        jo.put("result", recentDem.getResult().getTest_result());
+        log.info("jo date : " + jo.get("date"));
+        log.info("jo result : " + jo.get("result"));
+        if(recentDem != null) return jo.toString();
+    return null;
     }
 
 }
