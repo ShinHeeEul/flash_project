@@ -6,8 +6,6 @@ https://github.com/kihwn/flash_iOS
 ## Description
 ### Project Name
 > 음성을 통한 치매 진단 AI<br>
-### Project Personnel
-> 3<br>
 ### Project Description
 > 통화 음성 등의 치매 예상 환자의 음성 파일을 클라이언트에 넣으면 이를 서버로 전달하여 Clova Speech 서비스를 이용해 Text로 전환, AI Model에 넣어 치매인지 아닌지 판단을 하여 결과를 반환해주는 프로젝트<br>
 
